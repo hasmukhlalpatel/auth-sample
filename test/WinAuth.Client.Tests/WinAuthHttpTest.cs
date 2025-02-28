@@ -1,4 +1,5 @@
-﻿using System.Security.Principal;
+﻿using System.DirectoryServices.AccountManagement;
+using System.Security.Principal;
 
 namespace WinAuth.Client.Tests;
 
@@ -67,6 +68,24 @@ public class WinAuthHttpTest
             catch
             {
                 Console.WriteLine($" - {group.Value} (Could not resolve name)");
+            }
+        }
+    }
+    [Fact]
+    public async Task GetCurrentUserInfo2()
+    {
+        using (PrincipalContext context = new PrincipalContext(ContextType.Domain))
+        using (UserPrincipal user = UserPrincipal.FindByIdentity(context, Environment.UserName))
+        {
+            if (user != null)
+            {
+                Console.WriteLine($"User: {user.SamAccountName}");
+                Console.WriteLine("Groups:");
+
+                foreach (var group in user.GetAuthorizationGroups())
+                {
+                    Console.WriteLine($" - {group.Name}");
+                }
             }
         }
     }
