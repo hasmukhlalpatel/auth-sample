@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Negotiate;
+using WinAuth.WebApp.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,10 +40,12 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.MapGet("/", () => "Hello World!");
+//To chalnge manual Authentication/ ask or username and password
+app.UseChallengeAuthentication();
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.MapGet("/", (HttpContext context) => $"Hello World! User: {context?.User?.Identity?.Name}");
 
-app.MapControllers();
+
 app.Run();
