@@ -40,11 +40,14 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+
 //To chalnge manual Authentication/ ask or username and password
-app.UseChallengeAuthentication();
+//app.UseChallengeAuthentication();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+
 app.MapGet("/", (HttpContext context) => $"Hello World! User: {context?.User?.Identity?.Name}");
 
 

@@ -1,4 +1,5 @@
 ﻿using System.DirectoryServices.AccountManagement;
+using System.Net;
 using System.Security.Principal;
 
 namespace WinAuth.Client.Tests;
@@ -15,6 +16,23 @@ public class WinAuthHttpTest
         var content = await response.Content.ReadAsStringAsync();
         Console.WriteLine(content);
         //rerun the test to see the user name
+    }
+
+
+    [Fact]
+    public async Task ClientSendsTestUserTest()
+    {
+        //TODO: create a test user and Change the user name and password 
+        var handler = new HttpClientHandler
+        {
+            Credentials = new NetworkCredential("test", "test") //,"domain"
+        };
+        using var httpClient = new HttpClient(handler);
+
+        var response = await httpClient.GetAsync("http://localhost:5278");
+        var content = await response.Content.ReadAsStringAsync();
+        Console.WriteLine(content);
+        //return the test to see test user name
     }
 
     [Fact]
